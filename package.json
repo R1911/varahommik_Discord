@@ -1,0 +1,33 @@
+{
+  "dependencies": {
+    "axios": "^1.7.2",
+    "cron": "^3.1.7",
+    "discord-api-types": "^0.37.86",
+    "discord.js": "^14.15.2",
+    "dotenv": "^16.4.5",
+    "fs": "^0.0.1-security",
+    "node-cron": "^3.0.3",
+    "path": "^0.12.7",
+    "xml2js": "^0.6.2"
+  },
+  "name": "varahommik_discord",
+  "version": "0.0.1",
+  "description": "Discord version of varahommik twitter bot",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/R1911/varahommik_discord.git"
+  },
+  "keywords": [
+    "varahommik"
+  ],
+  "author": "R1911",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/R1911/varahommik_discord/issues"
+  },
+  "homepage": "https://github.com/R1911/varahommik_discord#readme"
+}
