@@ -20,10 +20,6 @@ module.exports = {
         )
     ),
   async execute(interaction) {
-    const currentDateTime = new Date().toLocaleString().replace(",", "");
-    console.log(
-      `${currentDateTime} ⚠️ @${interaction.member.displayName} used ${module.exports.data.name} command in ${interaction.channel.name}. `
-    );
     await interaction.deferReply();
     let asukoht = interaction.options.getString("asukoht");
     const weather = await scrapeWeatherDetails();
@@ -47,9 +43,7 @@ module.exports = {
       }
     } else {
       await interaction.editReply({
-        content:
-          `Üldine ilmateade:\n` +
-          `- ${weather.text}`,
+        content: `Üldine ilmateade:\n${weather.text}`,
       });
     }
   },

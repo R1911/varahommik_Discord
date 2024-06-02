@@ -1,4 +1,5 @@
-const greetingsChannel = "1246429428397903904";
+const fs = require("fs");
+const path = require("path");
 
 function createGreeting() {
   const currentDate = new Date();
@@ -35,13 +36,31 @@ function createGreeting() {
 }
 
 async function postGreeting(client) {
-  const content = createGreeting();
-  try {
-    const channel = await client.channels.fetch(greetingsChannel);
-    await channel.send({ content: content });
-  } catch (error) {
-    console.error(`Error while posting morning greeting!`, error);
-  }
+  const filePath = path.join(__dirname, "..", "data", "serverSettings.json");
+  const settings = JSON.parse(fs.readFileSync(filePath, "utf8"));
+
+  client.guilds.cache.forEach(async (guild) => {
+    const guildSettings = settings[guild.id];
+    if (!guildSettings || !guildSettings.announcementsChannel) {
+      console.log(`No announcements channel set for guild ${guild.id}.`);
+      return;
+    }
+
+    const content = createGreeting();
+    if (content) {
+      try {
+        const channel = await client.channels.fetch(
+          guildSettings.announcementsChannel
+        );
+        await channel.send({ content });
+      } catch (error) {
+        console.error(
+          `Error while posting greeting message in guild ${guild.id}:`,
+          error
+        );
+      }
+    }
+  });
 }
 
 //postGreeting(client);

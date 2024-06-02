@@ -1,31 +1,29 @@
-const greetingsChannel = "1246429428397903904";
-const { scrapeWeatherDetails } = require('../services/weatherScraper.js');
 const fs = require('fs');
 const path = require('path');
+const { scrapeWeatherDetails } = require('../services/weatherScraper.js');
 
-// Function to prepare and tweet weather update
 async function postWeather(client) {
-    try {
-        const weather = await scrapeWeatherDetails();
-        const { text } = weather;
-        let weatherContent;
+    const filePath = path.join(__dirname, '..', 'data', 'serverSettings.json');
+    const settings = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-        weatherContent = `${text}`;
+    client.guilds.cache.forEach(async guild => {
+        const guildSettings = settings[guild.id];
+        if (!guildSettings || !guildSettings.announcementsChannel) {
+            console.log(`No announcements channel set for guild ${guild.id}.`);
+            return;
+        }
 
-        // Read the last tweet ID to reply to
-        /*
-        const tweetDataPath = path.join(__dirname, "../tweet.json");
-        const tweetDataRaw = fs.readFileSync(tweetDataPath);
-        const { tweetId } = JSON.parse(tweetDataRaw);
-        */
-        // Reply to the previous tweet with weather update
-        const channel = await client.channels.fetch(greetingsChannel);
-        await channel.send({ content: weatherContent });
-        
-        // console.info(`Replied to tweet ID: ${tweetId} with weather update.`);
-    } catch (error) {
-        console.error(`Failed to post weather update:`, error);
-    }
+        try {
+            const weather = await scrapeWeatherDetails();
+            const { text } = weather;
+            let weatherContent = `${text}`;
+
+            const channel = await client.channels.fetch(guildSettings.announcementsChannel);
+            await channel.send({ content: weatherContent });
+        } catch (error) {
+            console.error(`Failed to post weather update in guild ${guild.id}:`, error);
+        }
+    });
 }
 
 module.exports = { postWeather };
