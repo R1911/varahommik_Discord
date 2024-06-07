@@ -13,12 +13,12 @@ const { scheduleCronJobs } = require("./utlis/cronJobs.js");
 
 const client = new Client({
   intents: [
-    GatewayIntentBits.DirectMessages,
+    //GatewayIntentBits.DirectMessages,
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.GuildMessageReactions,
+    //GatewayIntentBits.GuildMessageReactions,
     GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildPresences,
+    //GatewayIntentBits.GuildPresences,
     GatewayIntentBits.GuildMembers,
   ],
   partials: [Partials.Channel, Partials.Message, Partials.Reaction],
@@ -62,6 +62,25 @@ client.once("ready", () => {
 
     client.on(event.name, (...args) => event.execute(...args));
   }
+});
+
+client.on("guildCreate", guild => {
+  let welcomeMessage = "Tänan, et lisasite mind oma serverisse!\nSelleks, et ma saaksin korrektselt toimida, palun seadistage teadete kanal kasutades **/seadistateated** käsku (vajab admin õiguseid).";
+
+  //saada teavitus
+  const generalChannel = guild.channels.cache.find(channel => 
+    channel.name === 'general' && 
+    channel.type === ChannelType.GuildText && 
+    channel.permissionsFor(guild.me).has("SendMessages")) ||
+    guild.channels.cache.find(channel => 
+    channel.type === ChannelType.GuildText && 
+    channel.permissionsFor(guild.me).has("SendMessages"));
+
+if (generalChannel) {
+    generalChannel.send(welcomeMessage).catch(console.error);
+} else {
+    console.log(`No suitable channel found in guild: ${guild.name} to send a welcome message.`);
+}
 });
 
 scheduleCronJobs(client);
