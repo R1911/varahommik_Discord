@@ -9,7 +9,7 @@ module.exports = {
   async execute(interaction) {
     const isAdmin = interaction.member.permissions.has("ADMINISTRATOR");
 
-    const filePath = path.join(__dirname, '..', 'data', 'serverSettings.json');
+    const filePath = path.join(__dirname, '../..', 'data', 'serverSettings.json');
     const settings = JSON.parse(fs.readFileSync(filePath, "utf8"));
     const announcementsChannel = settings[interaction.guildId]?.announcementsChannel;
 
@@ -29,12 +29,12 @@ module.exports = {
     // Add a visual separator and specific channel info for admins
     if (isAdmin && announcementsChannel) {
       infoMessage.push(
-        "\n—————————————————————————————\n",
+        "\n——————————————————————————\n",
         `**Teavituste Kanal:** Teavitused on seadistatud kanalisse <#${announcementsChannel}>.`
       );
     } else if (isAdmin) {
       infoMessage.push(
-        "\n—————————————————————————————\n",
+        "\n——————————————————————————\n",
         "**Teavituste Kanal:** Teavituste kanal ei ole veel seadistatud."
       );
     }
