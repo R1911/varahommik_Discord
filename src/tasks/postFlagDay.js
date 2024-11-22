@@ -1,13 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 
-// Function to create flag day message based on the current date
+
 function createFlagDayMessage() {
   const currentDate = new Date();
   const day = currentDate.getDate();
-  const month = currentDate.getMonth() + 1; // January is 0
+  const month = currentDate.getMonth() + 1;
 
-  // Function to check if today matches a flag day
   const isFlagDay = (day, month, year) => {
     const fixedFlagDays = {
       "1/3": "Vabadussõjas võidelnute mälestuspäev",

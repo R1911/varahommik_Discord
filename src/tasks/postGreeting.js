@@ -8,7 +8,6 @@ function createGreeting() {
 
   let content = "Tere varahommikust! 🌞\nLoodan, et sul tuleb hea päev!";
 
-  // Check for special dates and modify the content accordingly
   if (month === 6 && day === 24) {
     content =
       "Tere varahommikust ning häid jaane! 🌞\nLoodan, et sul tuleb imeline jaanipäev!";
